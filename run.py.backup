@@ -1,0 +1,25 @@
+from zhSpider import ZhihuSpider  # 注意这里改成了 zhSpider
+import sys
+
+def main():
+    # 创建爬虫实例
+    spider = ZhihuSpider()
+    
+    if len(sys.argv) > 1 and sys.argv[1] == 'query':
+        # 查询模式
+        category = sys.argv[2] if len(sys.argv) > 2 else None
+        articles = spider.query_articles(category=category)
+        
+        print(f"\n{'='*80}")
+        print(f"{'标题':<50} {'赞同数':<10} {'分类':<10} {'创建时间'}")
+        print(f"{'='*80}")
+        
+        for article in articles:
+            title, url, upvotes, category, created_time = article
+            print(f"{title[:47]+'...':<50} {upvotes:<10} {category:<10} {created_time}")
+    else:
+        # 爬取模式
+        spider.run()
+
+if __name__ == "__main__":
+    main()
